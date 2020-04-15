@@ -7,9 +7,9 @@
 
 ## Short Term Goals
 - [Account creator bot](Account+Creator/account-creator.md)
-- [Tutorial Island bot](Tutorial\ Island/tutorial-island.md)
+- [Tutorial Island bot](Tutorial+Island/tutorial-island.md)
 
 ## Future Goals
 - [Quest bots](Quests/quests.md)
 - [Skilling bots](Skilling/skilling.md)
-- [Gold farming bots](Gold\ Farming/gold-farming.md)
+- [Gold farming bots](Gold+Farming/gold-farming.md)
