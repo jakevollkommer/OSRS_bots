@@ -6,10 +6,10 @@
 - [pyautogui](https://pyautogui.readthedocs.io/en/latest/)
 
 ## Short Term Goals
-- [Account creator bot](Account\ Creator)
-- [Tutorial Island bot](Tutorial\ Island)
+- [Account creator bot](./Account\ Creator)
+- [Tutorial Island bot](./Tutorial\ Island)
 
 ## Future Goals
-- [Quest bots](Quests)
-- [Skilling bots](Skilling)
-- [Gold farming bots](Gold\ Farming)
+- [Quest bots](./Quests)
+- [Skilling bots](./Skilling)
+- [Gold farming bots](./Gold\ Farming)
