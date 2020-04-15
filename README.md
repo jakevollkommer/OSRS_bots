@@ -6,7 +6,7 @@
 - [pyautogui](https://pyautogui.readthedocs.io/en/latest/)
 
 ## Short Term Goals
-- [Account creator bot](Account Creator/account-creator.md)
+- [Account creator bot](Account+Creator/account-creator.md)
 - [Tutorial Island bot](Tutorial\ Island/tutorial-island.md)
 
 ## Future Goals
