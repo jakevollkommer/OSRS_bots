@@ -6,22 +6,22 @@ import org.powerbot.script.rt4.*;
 import java.util.concurrent.Callable;
 
 public class TutorialCompleter extends Task {
-    Component instructionsHeader = ctx.widgets.component(263, 1).component(0);
-    Component chatHeader = ctx.widgets.component(231, 2);
-    Component accountManagementTab = ctx.widgets.component(164, 44);
-    Component friendsTab = ctx.widgets.component(164, 45);
-    Component optionsTab = ctx.widgets.component(164, 46);
-    Component combatTab = ctx.widgets.component(164, 52);
-    Component statsTab = ctx.widgets.component(164, 53);
-    Component questTab = ctx.widgets.component(164, 54);
-    Component inventoryTab = ctx.widgets.component(164, 55);
-    Component equipmentTab = ctx.widgets.component(164, 56);
-    Component prayerTab = ctx.widgets.component(164, 57);
-    Component mageTab = ctx.widgets.component(164, 58);
-    Component bronzeDagger = ctx.widgets.component(312, 9).component(2);
-    Component wornEquipment = ctx.widgets.component(387, 1);
+    Component instructionsHeader    = ctx.widgets.component(263, 1).component(0);
+    Component chatHeader            = ctx.widgets.component(231, 2);
+    Component accountManagementTab  = ctx.widgets.component(164, 44);
+    Component friendsTab            = ctx.widgets.component(164, 45);
+    Component optionsTab            = ctx.widgets.component(164, 46);
+    Component combatTab             = ctx.widgets.component(164, 52);
+    Component statsTab              = ctx.widgets.component(164, 53);
+    Component questTab              = ctx.widgets.component(164, 54);
+    Component inventoryTab          = ctx.widgets.component(164, 55);
+    Component equipmentTab          = ctx.widgets.component(164, 56);
+    Component prayerTab             = ctx.widgets.component(164, 57);
+    Component mageTab               = ctx.widgets.component(164, 58);
+    Component bronzeDagger          = ctx.widgets.component(312, 9).component(2);
+    Component wornEquipment         = ctx.widgets.component(387, 1);
     // TODO Not sure about this wind strike one
-    Component windStrike = ctx.widgets.component(261, 1).component(3);
+    Component windStrike            = ctx.widgets.component(261, 1).component(3);
 
     // Item IDs
     int shrimpID            = 2514;
@@ -212,6 +212,11 @@ public class TutorialCompleter extends Task {
         */
     }
 
+    /**
+     * Talk to a specific npc and complete all no-input dialogue.
+     * @param npc
+     *          the Npc object we want to talk to
+     */
     public void talkTo(Npc npc) {
         System.out.println("Talking to ID " + npc.id() + " AKA " + npc.name());
         npc.interact("Talk-to");
@@ -225,6 +230,11 @@ public class TutorialCompleter extends Task {
         continueChat();
     }
 
+    /**
+     * Gets the first Item object in your inventory with a given ID.
+     * @param id the item ID
+     * @return the Item object
+     */
     public Item getItemFromInventory(int id) {
         for(Item item : ctx.inventory.items()) {
             if (item.id() == id) {
@@ -234,13 +244,19 @@ public class TutorialCompleter extends Task {
         return null;
     }
 
+    /**
+     * Simply continues chat as many times as possible.
+     */
     public void continueChat() {
         while(ctx.chat.canContinue()) {
             ctx.chat.continueChat();
         }
     }
 
-    // Returns the raw shrimp Item
+    /**
+     * Fishes at the closest shrimp spot and returns the shrimp item.
+     * @return the Item object of the shrimp we caught (may be null)
+     */
     public Item fish() {
         // Fish a shrimp
         GameObject fishingSpot = ctx.objects.select().id(fishingSpots).nearest().select().poll();
@@ -250,6 +266,10 @@ public class TutorialCompleter extends Task {
         return getItemFromInventory(shrimpID);
     }
 
+    /**
+     * Cuts a tree and returns the log item.
+     * @return the Item object of the logs we chopped (may be null)
+     */
     public Item woodcut() {
         Npc survivalExpert = ctx.npcs.select().id(8503).select().poll();
         talkTo(survivalExpert);
@@ -260,6 +280,11 @@ public class TutorialCompleter extends Task {
         return getItemFromInventory(logsID);
     }
 
+    /**
+     * Lights logs on fire by dropping them and using the "Light" action.
+     * @param logs the logs to light
+     * @return the GroundItem object of the closest fire
+     */
     public GroundItem firemake(Item logs) {
         Item tinderbox = getItemFromInventory(tinderboxID);
         if (tinderbox == null) { System.out.println("You don't have a tinderbox!"); }
@@ -280,6 +305,11 @@ public class TutorialCompleter extends Task {
         return fire;
     }
 
+    /**
+     * Cooks a shrimp on a fire
+     * @param shrimp the shrimp to cook
+     * @param fire the fire to cook on
+     */
     public void cook(Item shrimp, GroundItem fire) {
         shrimp.interact("Use");
         fire.interact("Use"); //TODO this is probably something like Use Shrimp -> Fire
