@@ -1,0 +1,9 @@
+curl -O https://bootstrap.pypa.io/get-pip.py
+python3 get-pip.py --user
+echo 'export PATH=LOCAL_PATH:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+sudo apt-get install chromium-chromedriver
+pip install awsebcli --upgrade --user
+pip install selenium
+pip install pypandoc
+pip install randomwordgenerator
