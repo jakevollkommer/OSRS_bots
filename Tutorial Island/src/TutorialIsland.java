@@ -32,7 +32,7 @@ public class TutorialIsland extends PollingScript<ClientContext> implements Pain
             }
         }
 
-        //System.out.println("Script Completed");
+        System.out.println("Script Completed");
         Condition.sleep(2000);
     }
 

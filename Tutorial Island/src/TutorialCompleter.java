@@ -1,8 +1,11 @@
 package tutorial;
 
+import com.sun.tools.internal.jxc.ap.Const;
 import org.powerbot.script.Condition;
 import org.powerbot.script.rt4.*;
 
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Callable;
 
 public class TutorialCompleter extends Task {
@@ -10,7 +13,7 @@ public class TutorialCompleter extends Task {
     Component chatHeader            = ctx.widgets.component(231, 2);
     Component accountManagementTab  = ctx.widgets.component(164, 44);
     Component friendsTab            = ctx.widgets.component(164, 45);
-    Component optionsTab            = ctx.widgets.component(164, 46);
+    Component optionsTab            = ctx.widgets.component(164, 40); // TODO check texture type
     Component combatTab             = ctx.widgets.component(164, 52);
     Component statsTab              = ctx.widgets.component(164, 53);
     Component questTab              = ctx.widgets.component(164, 54);
@@ -78,6 +81,8 @@ public class TutorialCompleter extends Task {
     int mageInstructorID    = 3309;
     int chickenID           = 3316;
 
+    Npc gielinorGuide;
+
     // Are you doing an animation?
     Callable<Boolean> animation = new Callable<Boolean>() {
         @Override
@@ -87,40 +92,128 @@ public class TutorialCompleter extends Task {
         }
     };
 
+    // Is the chat window gone?
+    Callable<Boolean> chatWindowInvalid = new Callable<Boolean>() {
+        @Override
+        public Boolean call() throws Exception {
+            return !chatHeader.valid();
+        }
+    };
+
     public TutorialCompleter(ClientContext ctx) {
         super(ctx);
     }
 
     @Override
     public boolean activate() {
-        return instructionsHeader.text().contains("Getting started"); //TODO .valid()?
+        return instructionsHeader.text().contains("Getting started") && //TODO need a better check
+                instructionsHeader.height() == 68;
     }
 
     @Override
     public void execute() {
-        System.out.println("Starting tutorial");
-        Condition.sleep(2000);
-        // Talk to the Gielinor Guide
-        Npc gielinorGuide = ctx.npcs.select().id(gielinorID).select().poll();
-        talkTo(gielinorGuide);
-        System.out.println("talked");
-        ChatOption chat = ctx.chat.select().text("I am an experienced player.").poll();
-        chat.select();
-        continueChat();
-        // TODO check for completion somehow
-        // maybe check chat header for "Options menu"
-        optionsTab.click();
+        System.out.println("Starting Tutorial!");
+        randomSleep(2000,5000);
 
+        // Find the Gielinor Guide
+        while (gielinorGuide == null) {
+            gielinorGuide = getNpcWithID(gielinorID);
+            randomSleep(10,200);
+        }
+
+        // If we don't talk to him, restart
+        if (talkTo(gielinorGuide)) {
+            continueChat();
+        } else {
+            return;
+        }
+
+        String experienceOption = "I am an experienced player.";
+        // Is he asking our experience level?
+        Callable<Boolean> experienceReady = new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                for (int option : Constants.CHAT_OPTIONS) {
+                    Component chatOption = ctx.widgets.component(Constants.CHAT_WIDGET, option);
+                    if (chatOption.text().contains(experienceOption)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
+        Condition.wait(experienceReady, 500, 10);
+
+        System.out.println("We are experienced");
+        ChatOption chat = ctx.chat.select().text(experienceOption).poll();
+        chat.select();
+        // Have we clicked through to experience level?
+        Callable<Boolean> continuedChat = new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return ctx.chat.canContinue();
+            }
+        };
+        Condition.wait(continuedChat, 400, 10);
+
+        continueChat();
+        // Is the chat window gone?
+        Callable<Boolean> optionsReady = new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return chatHeader.text().contains("flashing") || instructionsHeader.text().contains("flashing");
+            }
+        };
+        Condition.wait(optionsReady, 500, 10);
+
+        System.out.println("Clicking options tab");
+        optionsTab.click();
+        // Have we clicked the options tab?
+        Callable<Boolean> optionsClicked = new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                System.out.println(optionsTab.textureId());
+                return optionsTab.textureId() != -1;
+            }
+        };
+        Condition.wait(optionsClicked, 1000, 7);
+        System.out.println("Options tab clicked!");
         talkTo(gielinorGuide);
+        continueChat();
+
+        System.out.println("Continuing to next area!");
 
         // Continue to First Area
-        GameObject firstDoor = ctx.objects.select().id(doorID).select().poll();
-        firstDoor.click();
+        GameObject firstDoor = ctx.objects.select().id(9398).poll();
+        if(firstDoor.inViewport()) {
+            firstDoor.interact("Open");
+            // Have we gone through the door?
+            Callable<Boolean> outside = new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    System.out.println(instructionsHeader.text());
+                    return instructionsHeader.text().contains("survival expert");
+                }
+            };
+            Condition.wait(outside, 600, 15);
+        } else {
+            ctx.camera.turnTo(firstDoor);
+        }
+
+        System.out.println("We are outside");
+
+        // Start skilling
         Npc survivalExpert = ctx.npcs.select().id(survivalID).select().poll();
         talkTo(survivalExpert);
         inventoryTab.click();
-        // TODO check for completion somehow
-        // maybe check chat header for "Fishing"
+        // Have we gotten our net?
+        Callable<Boolean> startFishing = new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return instructionsHeader.text().contains("start fishing");
+            }
+        };
+        Condition.wait(startFishing, 2000, 5);
 
         // Fish
         Item shrimp = fish();
@@ -217,17 +310,33 @@ public class TutorialCompleter extends Task {
      * @param npc
      *          the Npc object we want to talk to
      */
-    public void talkTo(Npc npc) {
+    public boolean  talkTo(Npc npc) {
         System.out.println("Talking to ID " + npc.id() + " AKA " + npc.name());
         npc.interact("Talk-to");
         Callable<Boolean> talking = new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
+                System.out.println("Chat contains " + chatHeader.text());
                 return chatHeader.text().contains(npc.name());
             }
         };
         Condition.wait(talking, 500, 10);
-        continueChat();
+        return chatHeader.text().contains(npc.name());
+    }
+
+    /**
+     * Method to return an NPC with a given ID.
+     * Sometimes the client selects an NPC with the wrong ID, so this is a more robust function.
+     * @param id the id of the npc
+     * @return the first NPC with the given id
+     */
+    public Npc getNpcWithID(int id) {
+        for (Npc npc : ctx.npcs.get()) {
+            if (npc.id() == id) {
+                return npc;
+            }
+        }
+        return null;
     }
 
     /**
@@ -249,8 +358,22 @@ public class TutorialCompleter extends Task {
      */
     public void continueChat() {
         while(ctx.chat.canContinue()) {
-            ctx.chat.continueChat();
+            ctx.chat.continueChat(true);
+            randomSleep(250, 1000);
         }
+    }
+
+    /**
+     * Uses the Condition.sleep() method to sleep a random number of seconds
+     * @param min
+     *      the shortest possible sleep time
+     * @param max
+     *      the longest possible sleep time
+     */
+    public void randomSleep(int min, int max) {
+        Random rand = new Random();
+        int sleepTime = rand.nextInt(min + max) + min;
+        Condition.sleep(sleepTime);
     }
 
     /**

@@ -10,6 +10,8 @@ import java.util.concurrent.Callable;
 public class CreateCharacter extends Task{
     Component availability = ctx.widgets.component(558, 12);
     Component suggestedName = ctx.widgets.component(558, 15);
+    Component acceptButton = ctx.widgets.component(269, 100);
+    Component setName = ctx.widgets.component(558, 18);
 
     public CreateCharacter(ClientContext ctx) {
         super(ctx);
@@ -22,6 +24,7 @@ public class CreateCharacter extends Task{
 
     @Override
     public void execute() {
+        System.out.println("Setting a character name");
         // Generate character name
         String generatedName = "test"; // TODO generate random name
 
@@ -46,18 +49,18 @@ public class CreateCharacter extends Task{
         Condition.wait(nameAvailable, 1000, 10);
 
         // Set the name
-        Component setName = ctx.widgets.component(558, 18);
         setName.click();
         Callable<Boolean> nameSet = new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                return !setName.valid();
+                return !setName.valid() && acceptButton.valid();
             }
         };
         Condition.wait(nameSet, 1000, 10);
 
+        System.out.println("Name has been set!");
+
         // Accept the default character build TODO (maybe change outfit in future)
-        Component acceptButton = ctx.widgets.component(269, 100);
         acceptButton.click();
         Callable<Boolean> characterBuild = new Callable<Boolean>() {
             @Override
@@ -66,5 +69,6 @@ public class CreateCharacter extends Task{
             }
         };
         Condition.wait(characterBuild, 100, 10);
+        System.out.println("Character built!");
     }
 }
