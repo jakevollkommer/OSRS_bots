@@ -29,8 +29,8 @@ public class TutorialConditions extends ClientAccessor {
         }
     };
 
-    // Is he asking our experience level?
-    Callable<Boolean> experienceReady = new Callable<Boolean>() {
+    // Do we have chat options?
+    Callable<Boolean> chatOptions = new Callable<Boolean>() {
         @Override
         public Boolean call() throws Exception {
             Component chatOption = ctx.widgets.component(Constants.CHAT_WIDGET, Constants.CHAT_OPTIONS[0]);
@@ -83,8 +83,15 @@ public class TutorialConditions extends ClientAccessor {
     Callable<Boolean> optionsClicked = new Callable<Boolean>() {
         @Override
         public Boolean call() throws Exception {
-            System.out.println(tutorialComponents.optionsTab.textureId());
             return tutorialComponents.optionsTab.textureId() != -1;
+        }
+    };
+
+    // Have we clicked the management tab?
+    Callable<Boolean> managementTabClicked = new Callable<Boolean>() {
+        @Override
+        public Boolean call() throws Exception {
+            return tutorialComponents.accountManagementTab.textureId() != -1;
         }
     };
 

@@ -42,7 +42,7 @@ public class StartingRoom extends Task {
         }
 
         String experienceOption = "I am an experienced player.";
-        Condition.wait(tutorialConditions.experienceReady, 500, 10);
+        Condition.wait(tutorialConditions.chatOptions, 500, 10);
 
         System.out.println("We are experienced");
         ChatOption chat = ctx.chat.select().text(experienceOption).poll();
@@ -66,15 +66,10 @@ public class StartingRoom extends Task {
             return;
         }
 
-        System.out.println("Continuing to next area!");
         // Continue to First Area
-        GameObject firstDoor = ctx.objects.select().id(doorID).poll();
-        if(!firstDoor.inViewport()) {
-            ctx.camera.turnTo(firstDoor);
-        }
-        while (!firstDoor.interact("Open")) {
-            System.out.println("Could not open door");
-        }
+        System.out.println("Opening door");
+        openDoor(doorID, ctx);
+
         System.out.println("First room completed!");
     }
 }

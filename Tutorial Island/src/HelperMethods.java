@@ -68,8 +68,15 @@ public class HelperMethods {
          *          the Npc object we want to talk to
          */
     public static boolean talkTo(Npc npc, ClientContext ctx) {
-        TutorialComponents tutorialComponents = new TutorialComponents(ctx);
         System.out.println("Talking to ID " + npc.id() + " AKA " + npc.name());
+        TutorialComponents tutorialComponents = new TutorialComponents(ctx);
+
+        // Turn to the NPC before talking
+        while(!npc.inViewport()) {
+            System.out.println("Turning camera");
+            ctx.camera.turnTo(npc);
+        }
+
         npc.interact("Talk-to");
         Callable<Boolean> talking = new Callable<Boolean>() {
             @Override
@@ -78,6 +85,7 @@ public class HelperMethods {
             }
         };
         Condition.wait(talking, 500, 10);
+
         return tutorialComponents.chatHeader.text().contains(npc.name());
     }
 
@@ -88,6 +96,40 @@ public class HelperMethods {
         while(ctx.chat.canContinue()) {
             ctx.chat.continueChat(true);
             randomSleep(500, 1000);
+        }
+    }
+
+    /**
+     * Tries to open a door until successful
+     * @param doorID the ID of the door to open
+     * @param ctx the client context
+     */
+    public static void openDoor(int doorID, ClientContext ctx) {
+        GameObject door = ctx.objects.select().id(doorID).poll();
+        if(!door.inViewport()) {
+            ctx.camera.turnTo(door);
+        }
+        while (!door.interact("Open")) {
+            System.out.println("Could not open door");
+            // TODO should probably change this to return boolean if door opened
+        }
+    }
+
+    /**
+     * Tries to climb a ladder until successful
+     * @param ladderID the ID of the ladder to climb
+     * @param direction the direction to climb
+     * @param ctx the client context
+     */
+    public static void climbLadder(int ladderID, String direction, ClientContext ctx) {
+        GameObject ladder = ctx.objects.select().id(ladderID).poll();
+        if(!ladder.inViewport()) {
+            ctx.camera.turnTo(ladder);
+        }
+        String action = "Climb-" + direction;
+
+        while (!ladder.interact(action)) {
+            System.out.println("Could not climb ladder");
         }
     }
 
@@ -168,6 +210,14 @@ public class HelperMethods {
         return fire;
     }
 
+    public static Item mine(GameObject rock, ClientContext ctx) {
+        rock.interact("Mine");
+        TutorialConditions tutorialConditions = new TutorialConditions(ctx);
+        Condition.wait(tutorialConditions.animation);
+
+        return getItemFromInventory(tinOreID, ctx);
+    }
+
     /**
      * Cooks a shrimp on a fire
      * @param shrimp the shrimp to cook
@@ -176,5 +226,25 @@ public class HelperMethods {
     public static void cook(Item shrimp, GameObject fire) {
         shrimp.interact("Use");
         fire.interact("Use", "Fire");
+    }
+
+    /**
+     * Uses an item on another item
+     * @param useThis the first item to click
+     * @param onThis the second item to click
+     */
+    public static void useItemOnOtherItem(Item useThis, Item onThis) {
+        useThis.interact("Use");
+        onThis.interact("Use", onThis.name());
+    }
+
+    /**
+     * Uses an item on an object
+     * @param useThis the item to use
+     * @param onThis the object to use the item on
+     */
+    public static void useItemOnObject(Item useThis, GameObject onThis) {
+        useThis.interact("Use");
+        onThis.interact("Use", onThis.name());
     }
 }

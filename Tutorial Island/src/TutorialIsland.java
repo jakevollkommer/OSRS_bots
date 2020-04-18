@@ -1,18 +1,10 @@
 package tutorialIsland;
 
-
 import org.powerbot.script.*;
-import org.powerbot.script.rt4.BasicQuery;
 import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.GameObject;
-import org.powerbot.script.rt4.Item;
 
 import java.awt.*;
 import java.util.ArrayList;
-
-
-import static tutorialIsland.HelperMethods.*;
-import static tutorialIsland.TutorialConstants.*;
 
 @Script.Manifest(name="Tutorial Island", description="Tutorial", properties="client=4; author=Chris; topic=999;")
 

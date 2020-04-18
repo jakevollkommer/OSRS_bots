@@ -2,8 +2,6 @@ package tutorialIsland;
 
 import org.powerbot.script.rt4.ClientAccessor;
 import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.Component;
-import org.powerbot.script.rt4.Constants;
 
 public final class TutorialConstants extends ClientAccessor {
     // Item IDs
@@ -61,6 +59,10 @@ public final class TutorialConstants extends ClientAccessor {
     public static final int mageInstructorID    = 3309;
     public static final int chickenID           = 3316;
     public static final int fishingSpotID       = 3317;
+
+    // Strings
+    public static final String LADDER_UP            = "Up";
+    public static final String LADDER_DOWN          = "Down";
 
     public TutorialConstants(ClientContext ctx) {
         super(ctx);

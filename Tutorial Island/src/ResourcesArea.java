@@ -28,12 +28,6 @@ public class ResourcesArea extends Task {
         // Start skilling
         Npc survivalExpert = getNpcWithID(survivalID, ctx);
 
-        while(!survivalExpert.inViewport()) {
-            System.out.println("Turning camera");
-            ctx.camera.turnTo(survivalExpert);
-//            Path pathToExpert = ctx.movement.findPath(survivalExpert);
-//            ctx.movement.newTilePath(pathToExpert).traverse();
-        }
         talkTo(survivalExpert, ctx);
         continueChat(ctx);
 
@@ -85,13 +79,8 @@ public class ResourcesArea extends Task {
 
         System.out.println("Continuing to next area!");
         // Continue to Quest Area
-        GameObject gate = ctx.objects.select().id(gateID).poll();
-        if(!gate.inViewport()) {
-            ctx.camera.turnTo(gate);
-        }
-        while (!gate.interact("Open")) {
-            System.out.println("Could not open door");
-        }
+        openDoor(gateID, ctx);
+
         System.out.println("Resource area completed!");
     }
 }
