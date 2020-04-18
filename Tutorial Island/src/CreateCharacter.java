@@ -1,13 +1,12 @@
-package tutorial;
+package tutorialIsland;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Component;
-import org.powerbot.script.rt4.IdQuery;
 
 import java.util.concurrent.Callable;
 
-public class CreateCharacter extends Task{
+public class CreateCharacter extends Task {
     Component availability = ctx.widgets.component(558, 12);
     Component suggestedName = ctx.widgets.component(558, 15);
     Component acceptButton = ctx.widgets.component(269, 100);

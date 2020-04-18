@@ -1,27 +1,30 @@
-package tutorial;
+package tutorialIsland;
 
 
 import org.powerbot.script.*;
-import org.powerbot.script.rt4.*;
+import org.powerbot.script.rt4.BasicQuery;
 import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.Component;
+import org.powerbot.script.rt4.GameObject;
+import org.powerbot.script.rt4.Item;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
+
+
+import static tutorialIsland.HelperMethods.*;
+import static tutorialIsland.TutorialConstants.*;
 
 @Script.Manifest(name="Tutorial Island", description="Tutorial", properties="client=4; author=Chris; topic=999;")
 
 public class TutorialIsland extends PollingScript<ClientContext> implements PaintListener
 {
-    ArrayList<Task> tasks = new ArrayList<Task>();
+    ArrayList<Task> tasks = new ArrayList<>();
     @Override
     public void start() {
         System.out.println("Tutorial Island");
-        CreateCharacter createCharacter = new CreateCharacter(ctx);
-        TutorialCompleter tutorialCompleter = new TutorialCompleter(ctx);
-        tasks.add(createCharacter);
-        tasks.add(tutorialCompleter);
+        tasks.add(new CreateCharacter(ctx));
+        tasks.add(new StartingRoom(ctx));
+        tasks.add(new ResourcesArea(ctx));
     }
 
     @Override
@@ -31,9 +34,6 @@ public class TutorialIsland extends PollingScript<ClientContext> implements Pain
                 t.execute();
             }
         }
-
-        System.out.println("Script Completed");
-        Condition.sleep(2000);
     }
 
     @Override
