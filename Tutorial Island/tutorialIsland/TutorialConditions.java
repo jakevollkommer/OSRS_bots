@@ -25,7 +25,6 @@ public class TutorialConditions extends ClientAccessor {
     Callable<Boolean> notInMotion = new Callable<Boolean>() {
         @Override
         public Boolean call() throws Exception {
-            System.out.println("inmotion: " + ctx.players.local().inMotion());
             return !ctx.players.local().inMotion();
         }
     };
@@ -34,7 +33,6 @@ public class TutorialConditions extends ClientAccessor {
     Callable<Boolean> outOfCombat = new Callable<Boolean>() {
         @Override
         public Boolean call() throws Exception {
-            System.out.println("inmotion: " + ctx.players.local().inMotion());
             return !ctx.players.local().interacting().valid();
         }
     };
@@ -43,7 +41,6 @@ public class TutorialConditions extends ClientAccessor {
     Callable<Boolean> inCombat = new Callable<Boolean>() {
         @Override
         public Boolean call() throws Exception {
-            System.out.println("inmotion: " + ctx.players.local().inMotion());
             return ctx.players.local().interacting().valid();
         }
     };

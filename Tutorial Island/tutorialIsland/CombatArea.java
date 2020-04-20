@@ -87,7 +87,7 @@ public class CombatArea extends Task {
         Item woodShield = getItemFromInventory(woodShieldID, ctx);
         bronzeSword.interact("Wield");
         randomSleep(500, 1000);
-        woodShield.interact("Wear");
+        woodShield.interact("Wield");
         tabReady = Condition.wait(tutorialConditions.tabReady, 300, 15);
         while (!tabReady) {
             bronzeSword.interact("Wield");
@@ -112,6 +112,9 @@ public class CombatArea extends Task {
         openDoor(true, RAT_DOOR, combatGateID, ctx);
 
         // Kill a rat
+        // TODO check the rat is not fighting someone else
+        // thinking we can make a check in getNpcFromID with optional param that it can't
+        // be in combat
         System.out.println("Killing a rat");
         attack(giantRatID, ctx);
 

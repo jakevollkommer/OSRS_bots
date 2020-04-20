@@ -39,8 +39,6 @@ public class TutorialIsland extends PollingScript<ClientContext> implements Pain
                 t.execute();
             }
         }
-//        openDoor(true, POST_PRAYER_DOOR, prayerDoorID, ctx);
-//        randomSleep(2000,3000);
     }
 
     @Override

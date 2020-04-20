@@ -30,6 +30,7 @@ public class QuestArea extends Task {
         System.out.println("Starting Quest area");
 
         // Run to the door
+        // TODO this is the wrong area maybe
         System.out.println("Running to the door");
         pathToArea(PRE_QUEST_AREA, ctx);
 

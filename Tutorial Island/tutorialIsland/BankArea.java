@@ -29,7 +29,7 @@ public class BankArea extends Task {
         System.out.println("Starting bank area");
 
         // Run to bank
-        // TODO pathing
+        pathToArea(BANK_AREA, ctx);
 
         // Use the bank booth
         System.out.println("Using bank booth");

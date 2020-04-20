@@ -69,24 +69,24 @@ public final class TutorialConstants extends ClientAccessor {
     public static final String LADDER_DOWN          = "Down";
 
     // Door areas
-    public static final Area RESOURCE_DOOR          = new Area(new Tile(3098, 3107, 0));
-    public static final Area POST_RESOURCE_DOOR     = new Area(new Tile(3089, 3091, 0), new Tile(3089, 3092, 0));
-    public static final Area COOKING_DOOR           = new Area(new Tile(3078, 3084, 0));
-    public static final Area POST_COOKING_DOOR      = new Area(new Tile(3072, 3090, 0));
-    public static final Area QUEST_DOOR             = new Area(new Tile(3086, 3125, 0));
-    public static final Area COMBAT_DOOR            = new Area(new Tile(3095, 9502, 0), new Tile(3095, 9503, 0));
-    public static final Area VANAKKA_DOOR           = new Area(new Tile(3111, 9518, 0), new Tile(3111, 9519, 0));
-    public static final Area RAT_DOOR               = new Area(new Tile(3110, 9518, 0), new Tile(3110, 9519, 0));
-    public static final Area MANAGEMENT_DOOR        = new Area(new Tile(3125, 3124, 0));
-    public static final Area POST_MANAGEMENT_DOOR   = new Area(new Tile(3130, 3124, 0));
-    public static final Area POST_PRAYER_DOOR       = new Area(new Tile(3122, 3102, 0));
+    public static final Tile[] RESOURCE_DOOR          = {new Tile(3098, 3107, 0)};
+    public static final Tile[] POST_RESOURCE_DOOR     = {new Tile(3089, 3091, 0), new Tile(3089, 3092, 0)};
+    public static final Tile[] COOKING_DOOR           = {new Tile(3078, 3084, 0)};
+    public static final Tile[] POST_COOKING_DOOR      = {new Tile(3072, 3090, 0)};
+    public static final Tile[] QUEST_DOOR             = {new Tile(3086, 3125, 0)};
+    public static final Tile[] COMBAT_DOOR            = {new Tile(3095, 9502, 0), new Tile(3095, 9503, 0)};
+    public static final Tile[] VANAKKA_DOOR           = {new Tile(3111, 9518, 0), new Tile(3111, 9519, 0)};
+    public static final Tile[] RAT_DOOR               = {new Tile(3110, 9518, 0), new Tile(3110, 9519, 0)};
+    public static final Tile[] MANAGEMENT_DOOR        = {new Tile(3125, 3124, 0)};
+    public static final Tile[] POST_MANAGEMENT_DOOR   = {new Tile(3130, 3124, 0)};
+    public static final Tile[] POST_PRAYER_DOOR       = {new Tile(3122, 3102, 0)};
 
     // Ladder areas
-    public static final Area MINING_LADDER      = new Area(new Tile(3088, 9520, 0));
-    public static final Area BANK_LADDER        = createAreaFromCorners(
+    public static final Tile[] MINING_LADDER      = {new Tile(3088, 9520, 0)};
+    public static final Tile[] BANK_LADDER        = {
             new Tile(3110, 3125, 0),
             new Tile(3112, 3127, 0)
-    );
+    };
 
     // Areas
     public static final Area OUTSIDE_COOKING_AREA   = createAreaFromCorners(

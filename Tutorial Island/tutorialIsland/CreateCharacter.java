@@ -35,7 +35,7 @@ public class CreateCharacter extends Task {
                 return availability.text().contains("not");
             }
         };
-        Condition.wait(availabilityChecked, 1000, 10);
+        Condition.wait(availabilityChecked, 300, 15);
 
         // If name is not available, use a default name
         suggestedName.click();
@@ -45,7 +45,7 @@ public class CreateCharacter extends Task {
                 return availability.text().contains("Great!");
             }
         };
-        Condition.wait(nameAvailable, 1000, 10);
+        Condition.wait(nameAvailable, 300, 15);
 
         // Set the name
         setName.click();
@@ -55,7 +55,7 @@ public class CreateCharacter extends Task {
                 return !setName.valid() && acceptButton.valid();
             }
         };
-        Condition.wait(nameSet, 1000, 10);
+        Condition.wait(nameSet, 300, 15);
 
         System.out.println("Name has been set!");
 
@@ -67,7 +67,7 @@ public class CreateCharacter extends Task {
                 return !acceptButton.valid();
             }
         };
-        Condition.wait(characterBuild, 100, 10);
+        Condition.wait(characterBuild, 300, 15);
         System.out.println("Character built!");
     }
 }

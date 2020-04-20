@@ -10,6 +10,8 @@ public class TutorialComponents extends ClientAccessor {
     // Components
     public final Component instructionsHeader    = ctx.widgets.component(263, 1).component(0);
     public final Component continueItem          = ctx.widgets.component(193, 0).component(2);
+    // TODO if this is visible we MUST click it
+    public final Component interestingContinue   = ctx.widgets.component(Constants.CHAT_INPUT, 45);
     public final Component chatHeader            = ctx.widgets.component(Constants.CHAT_NPC, 2);
     public final Component equipmentX            = ctx.widgets.component(84, 4);
     public final Component bankX                 = ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_MASTER).component(Constants.BANK_CLOSE);

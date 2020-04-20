@@ -127,23 +127,13 @@ public class HelperMethods {
      * @param ctx the client context
      * @return whether the door was opened successfully
      */
-    public static boolean openDoor(int doorID, Area area, ClientContext ctx) {
+    public static boolean openDoor(int doorID, Tile[] area, ClientContext ctx) {
         GameObject door = ctx.objects.select().id(doorID).poll();
         ctx.camera.turnTo(door);
         boolean openedDoor = door.interact("Open");
-        TutorialConditions tutorialConditions = new TutorialConditions(ctx);
-        Condition.wait(tutorialConditions.notInMotion, 300, 10);
-        randomSleep(1000, 3000);
+        randomSleep(1500, 3000);
 
-        System.out.println(openedDoor);
-        System.out.println(area.contains(ctx.players.local().tile()));
-        System.out.println(ctx.players.local().tile());
-        for (int i = 0 ; i < area.tiles().length; i++) {
-            System.out.println(area.tiles()[i].x() + ", " + area.tiles()[i].y());
-        }
-
-        return openedDoor;
-//        return openedDoor && area.contains(ctx.players.local().tile());
+        return openedDoor && areaContainsTile(area, ctx.players.local().tile(), ctx);
     }
 
     /**
@@ -154,7 +144,7 @@ public class HelperMethods {
      * @param ctx the client context
      * @return whether the door was opened successfully
      */
-    public static boolean openDoor(boolean forced, Area area, int doorID, ClientContext ctx) {
+    public static boolean openDoor(boolean forced, Tile[] area, int doorID, ClientContext ctx) {
         if (!forced) { return openDoor(doorID, area, ctx); };
 
         boolean doorOpened = openDoor(doorID, area, ctx);
@@ -174,7 +164,7 @@ public class HelperMethods {
      * @return whether the door was opened successfully
      */
     public static boolean openDoor(boolean forced, int doorID, ClientContext ctx) {
-        Area area = new Area (ctx.players.local().tile());
+        Tile[] area = {ctx.players.local().tile()};
         if (!forced) { return openDoor(doorID, area, ctx); };
         return openDoor(forced, area, doorID, ctx);
     }
@@ -183,28 +173,29 @@ public class HelperMethods {
      * Tries to climb a ladder until successful
      * @param ladderID the ID of the ladder to climb
      * @param direction the direction to climb
-     * @param destination the area we should end up in
+     * @param destination the array of tiles we should end up at
      * @param ctx the client context
      * @return whether the ladder was climbed successfully
      */
-    public static boolean climbLadder(int ladderID, String direction, Area destination, ClientContext ctx) {
+    public static boolean climbLadder(int ladderID, String direction, Tile[] destination, ClientContext ctx) {
         GameObject ladder = ctx.objects.select().id(ladderID).poll();
         ctx.camera.turnTo(ladder);
         String action = "Climb-" + direction;
         boolean climbed = ladder.interact(action);
         randomSleep(300,1800);
 
-        return climbed && destination.contains(ctx.players.local().tile());
+        return climbed && areaContainsTile(destination, ctx.players.local().tile(), ctx);
     }
 
     /**
      * Tries to climb a ladder until successful
      * @param ladderID the ID of the ladder to climb
      * @param direction the direction to climb
+     * @param destination the array of tiles we should end up at
      * @param ctx the client context
      * @return whether the ladder was climbed successfully
      */
-    public static boolean climbLadder(boolean forced, int ladderID, String direction, Area destination, ClientContext ctx) {
+    public static boolean climbLadder(boolean forced, int ladderID, String direction, Tile[] destination, ClientContext ctx) {
         if (!forced) { climbLadder(ladderID, direction, destination, ctx); }
 
         boolean ladderClimbed = climbLadder(ladderID, direction, destination, ctx);
@@ -258,6 +249,7 @@ public class HelperMethods {
 
     /**
      * Fishes at the closest shrimp spot and returns the shrimp item.
+     * @param ctx the Client Context
      * @return the Item object of the shrimp we caught (may be null)
      */
     public static Item fish(ClientContext ctx) {
@@ -273,6 +265,13 @@ public class HelperMethods {
         return getItemFromInventory(rawShrimpID, ctx);
     }
 
+    /**
+     * Smelts at a furnace
+     * @param furnaceID the id of the furnace
+     * @param barID the id of the bar we smelted
+     * @param ctx the Client Context
+     * @return the Item object of the bar we smelted
+     */
     public static Item smelt(int furnaceID, int barID, ClientContext ctx) {
         GameObject furnace = getNearestGameObject(furnaceID, ctx);
         ctx.camera.turnTo(furnace);
@@ -282,6 +281,13 @@ public class HelperMethods {
         return getItemFromInventory(barID, ctx);
     }
 
+    /**
+     * Smiths at an anvil
+     * @param anvilID the id of the anvil
+     * @param itemID the id of the item we smithed
+     * @param ctx the Client Context
+     * @return the Item object of the shrimp we caught (may be null)
+     */
     public static Item smith(int anvilID, int itemID, ClientContext ctx) {
         TutorialConditions tutorialConditions = new TutorialConditions(ctx);
         TutorialComponents tutorialComponents = new TutorialComponents(ctx);
@@ -295,6 +301,24 @@ public class HelperMethods {
         Condition.wait(tutorialConditions.daggerSmithed, 300, 15);
 
         return getItemFromInventory(itemID, ctx);
+    }
+
+    /**
+     * A function to determine if a tile is within a defined area
+     * @param area an array of Tiles
+     * @param tile the tile we're checking
+     * @param ctx the client context
+     * @return true if the tile is contained in the area, false otherwise
+     */
+    public static boolean areaContainsTile(Tile[] area, Tile tile, ClientContext ctx) {
+        for (int i = 0; i < area.length; i++) {
+            if (area[i].x() == tile.x() &&
+                    area[i].y() == tile.y() &&
+                    area[i].floor() == tile.floor()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -369,7 +393,9 @@ public class HelperMethods {
         TutorialConditions tutorialConditions = new TutorialConditions(ctx);
         boolean inCombat = Condition.wait(tutorialConditions.inCombat, 500, 10);
         while (!inCombat) {
+            npc = getNpcWithID(npcID, ctx);
             npc.interact("Attack");
+            inCombat = Condition.wait(tutorialConditions.inCombat, 500, 10);
         }
         boolean npcKilled = Condition.wait(tutorialConditions.outOfCombat, 500, 10);
         while (!npcKilled) {

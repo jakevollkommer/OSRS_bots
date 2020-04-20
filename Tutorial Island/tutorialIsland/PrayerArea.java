@@ -35,6 +35,7 @@ public class PrayerArea extends Task {
         continueChat(ctx);
         boolean tabReady = Condition.wait(tutorialConditions.tabReady, 300, 15);
         while (!tabReady) {
+            talkTo(brotherBrace, ctx);
             continueChat(ctx);
             tabReady = Condition.wait(tutorialConditions.tabReady, 300, 15);
         }
