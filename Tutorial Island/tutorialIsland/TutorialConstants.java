@@ -11,6 +11,7 @@ public final class TutorialConstants extends ClientAccessor {
     // Item IDs
     public static final int rawShrimpID         = 2514;
     public static final int cookedShrimpID      = 315;
+    public static final int burntShrimpID       = 7954;
     public static final int logsID              = 2511;
     public static final int tinderboxID         = 590;
     public static final int flourID             = 2516;
@@ -75,7 +76,7 @@ public final class TutorialConstants extends ClientAccessor {
     public static final Tile[] POST_COOKING_DOOR      = {new Tile(3072, 3090, 0)};
     public static final Tile[] QUEST_DOOR             = {new Tile(3086, 3125, 0)};
     public static final Tile[] COMBAT_DOOR            = {new Tile(3095, 9502, 0), new Tile(3095, 9503, 0)};
-    public static final Tile[] VANAKKA_DOOR           = {new Tile(3111, 9518, 0), new Tile(3111, 9519, 0)};
+    public static final Tile[] VANNAKA_DOOR           = {new Tile(3111, 9518, 0), new Tile(3111, 9519, 0)};
     public static final Tile[] RAT_DOOR               = {new Tile(3110, 9518, 0), new Tile(3110, 9519, 0)};
     public static final Tile[] MANAGEMENT_DOOR        = {new Tile(3125, 3124, 0)};
     public static final Tile[] POST_MANAGEMENT_DOOR   = {new Tile(3130, 3124, 0)};
@@ -93,14 +94,21 @@ public final class TutorialConstants extends ClientAccessor {
             new Tile(3079, 3080, 0),
             new Tile(3084, 3086, 0)
     );
-    public static final Area PRE_QUEST_AREA         = createAreaFromCorners(
-            // TODO (minus the building?)
-            new Tile(3075, 3123, 0),
-            new Tile(3088, 3129, 0)
+    public static final Area PRE_QUEST_AREA1         = createAreaFromCorners(
+            new Tile(3067, 3109, 0),
+            new Tile(3078, 3114, 0)
+    );
+    public static final Area PRE_QUEST_AREA2         = createAreaFromCorners(
+            new Tile(3077, 3126, 0),
+            new Tile(3090, 3129, 0)
     );
     public static final Area MINING_AREA            = createAreaFromCorners(
             new Tile(3076, 9499, 0),
             new Tile(3084, 9508, 0)
+    );
+    public static final Area POST_MINING_AREA            = createAreaFromCorners(
+            new Tile(3089, 9502, 0),
+            new Tile(3094, 9503, 0)
     );
     public static final Area COMBAT_LADDER_AREA     = createAreaFromCorners(
             new Tile(3109, 9523, 0),

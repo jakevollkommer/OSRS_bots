@@ -127,12 +127,28 @@ public class TutorialConditions extends ClientAccessor {
         }
     };
 
+    // Are we ready to ?
+    Callable<Boolean> readyToMine = new Callable<Boolean>() {
+        @Override
+        public Boolean call() throws Exception {
+            return tutorialComponents.instructionsHeader.text().contains("tin");
+        }
+    };
+
     // Can we click a flashing tab?
     Callable<Boolean> tabReady = new Callable<Boolean>() {
         @Override
         public Boolean call() throws Exception {
             return tutorialComponents.chatHeader.text().contains("flashing") ||
                     tutorialComponents.instructionsHeader.text().contains("flashing");
+        }
+    };
+
+    // Can we start rangin?
+    Callable<Boolean> readyToRange = new Callable<Boolean>() {
+        @Override
+        public Boolean call() throws Exception {
+            return tutorialComponents.instructionsHeader.text().contains("arrows");
         }
     };
 
@@ -244,7 +260,16 @@ public class TutorialConditions extends ClientAccessor {
     Callable<Boolean> wornEquipmentClicked = new Callable<Boolean>() {
         @Override
         public Boolean call() throws Exception {
-            return  tutorialComponents.instructionsHeader.text().contains("worn inventory");
+            return tutorialComponents.instructionsHeader.text().contains("worn inventory");
+        }
+    };
+
+    // Have we equipped the dagger?
+    Callable<Boolean> daggerEquipped = new Callable<Boolean>() {
+        @Override
+        public Boolean call() throws Exception {
+            System.out.println(tutorialComponents.weaponSlot.itemId());
+            return tutorialComponents.weaponSlot.itemId() == bronzeDaggerID;
         }
     };
 

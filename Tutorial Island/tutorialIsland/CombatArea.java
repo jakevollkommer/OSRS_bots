@@ -60,7 +60,11 @@ public class CombatArea extends Task {
         System.out.println("Wielding bronze dagger");
         Item bronzeDagger = getItemFromInventory(bronzeDaggerID, ctx);
         bronzeDagger.interact("Equip");
-        randomSleep(300, 800);
+        boolean daggerEquipped = Condition.wait(tutorialConditions.daggerEquipped, 300, 15);
+        while (!daggerEquipped) {
+            bronzeDagger.interact("Equip");
+            daggerEquipped = Condition.wait(tutorialConditions.daggerEquipped, 300, 15);
+        }
 
         // X out the interface
         System.out.println("Closing equipment");
@@ -72,13 +76,14 @@ public class CombatArea extends Task {
             interfaceClosed = Condition.wait(tutorialConditions.equipmentInterfaceInvalid, 300, 15);
         }
 
-        // Talk to vanakka again
+        // Talk to vannaka again
         talkTo(vanakka, ctx);
         continueChat(ctx);
-        boolean chatInvalid = Condition.wait(tutorialConditions.chatWindowInvalid, 300, 15);
+        boolean chatInvalid = Condition.wait(tutorialConditions.readyToRange, 300, 15);
         while (!chatInvalid) {
+            talkTo(vanakka, ctx);
             continueChat(ctx);
-            chatInvalid = Condition.wait(tutorialConditions.chatWindowInvalid, 300, 15);
+            chatInvalid = Condition.wait(tutorialConditions.readyToRange, 300, 15);
         }
 
         // Equip bronze sword and wooden shield
@@ -112,15 +117,12 @@ public class CombatArea extends Task {
         openDoor(true, RAT_DOOR, combatGateID, ctx);
 
         // Kill a rat
-        // TODO check the rat is not fighting someone else
-        // thinking we can make a check in getNpcFromID with optional param that it can't
-        // be in combat
         System.out.println("Killing a rat");
         attack(giantRatID, ctx);
 
         // Open the gate
         System.out.println("Opening gate");
-        openDoor(true, VANAKKA_DOOR, combatGateID, ctx);
+        openDoor(true, VANNAKA_DOOR, combatGateID, ctx);
 
         // Talk to vanakka
         talkTo(vanakka, ctx);

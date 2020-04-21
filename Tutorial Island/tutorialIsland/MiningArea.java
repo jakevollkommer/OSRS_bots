@@ -31,10 +31,10 @@ public class MiningArea extends Task {
         Npc miningInstructor = getNpcWithID(true, miningID, ctx);
         talkTo(miningInstructor, ctx);
         continueChat(ctx);
-        boolean chatInvalid = Condition.wait(tutorialConditions.chatWindowInvalid, 300, 15);
+        boolean chatInvalid = Condition.wait(tutorialConditions.readyToMine, 300, 15);
         while (!chatInvalid) {
             continueChat(ctx);
-            chatInvalid = Condition.wait(tutorialConditions.chatWindowInvalid, 300, 15);
+            chatInvalid = Condition.wait(tutorialConditions.readyToMine, 300, 15);
         }
 
         // Mine tin
@@ -79,6 +79,8 @@ public class MiningArea extends Task {
 
         // Open gate
         openDoor(true, COMBAT_DOOR, metalGateID, ctx);
+
+        pathToArea(POST_MINING_AREA, ctx);
 
         System.out.println("Mining area complete!");
     }

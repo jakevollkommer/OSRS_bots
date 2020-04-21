@@ -119,7 +119,7 @@ public class MageArea extends Task {
         chatOptions = Condition.wait(tutorialConditions.chatOptions, 400, 10);
         while (!chatOptions) {
             continueChat(ctx);
-            tutorialComponents.continueItem.click();
+            chatOptions = Condition.wait(tutorialConditions.chatOptions, 400, 10);
         }
         ChatOption mainland = ctx.chat.select().text("Yes.").poll();
         mainland.select();

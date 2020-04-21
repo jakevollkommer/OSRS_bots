@@ -11,7 +11,7 @@ public class TutorialComponents extends ClientAccessor {
     public final Component instructionsHeader    = ctx.widgets.component(263, 1).component(0);
     public final Component continueItem          = ctx.widgets.component(193, 0).component(2);
     // TODO if this is visible we MUST click it
-    public final Component interestingContinue   = ctx.widgets.component(Constants.CHAT_INPUT, 45);
+    public final Component failureContinue       = ctx.widgets.component(Constants.CHAT_INPUT, 45);
     public final Component chatHeader            = ctx.widgets.component(Constants.CHAT_NPC, 2);
     public final Component equipmentX            = ctx.widgets.component(84, 4);
     public final Component bankX                 = ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_MASTER).component(Constants.BANK_CLOSE);
@@ -30,6 +30,7 @@ public class TutorialComponents extends ClientAccessor {
 
     public final Component bronzeDagger          = ctx.widgets.component(312, 9).component(2);
     public final Component wornEquipment         = ctx.widgets.component(Constants.EQUIPMENT_WIDGET, 1);
+    public final Component weaponSlot            = ctx.widgets.component(Constants.EQUIPMENT_WIDGET, 17).component(1);
     public final Component windStrike            = ctx.widgets.component(Constants.SPELLBOOK_WIDGET, 6);
 
     public TutorialComponents(ClientContext ctx) {

@@ -54,6 +54,7 @@ public class CookingArea extends Task {
             useItemOnOtherItem(flour, bucketWater);
             doughMade = Condition.wait(tutorialConditions.doughMade, 400, 10);
         }
+        System.out.println("Dough made");
 
         Item dough = getItemFromInventory(doughID, ctx);
         GameObject range = getNearestGameObject(rangeID, ctx);
@@ -61,8 +62,9 @@ public class CookingArea extends Task {
         boolean breadMade = Condition.wait(tutorialConditions.breadMade, 400, 10);
         while (!breadMade) {
             useItemOnObject(dough, range);
-            breadMade = Condition.wait(tutorialConditions.doughMade, 400, 10);
+            breadMade = Condition.wait(tutorialConditions.breadMade, 400, 10);
         }
+        System.out.println("Bread made");
 
         // Open the door
         System.out.println("Opening door");

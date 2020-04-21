@@ -3,6 +3,7 @@ package tutorialIsland;
 import com.sun.corba.se.pept.protocol.ClientDelegate;
 import org.powerbot.script.Area;
 import org.powerbot.script.Condition;
+import org.powerbot.script.Filter;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.*;
 
@@ -133,7 +134,7 @@ public class HelperMethods {
         boolean openedDoor = door.interact("Open");
         randomSleep(1500, 3000);
 
-        return openedDoor && areaContainsTile(area, ctx.players.local().tile(), ctx);
+        return areaContainsTile(area, ctx.players.local().tile(), ctx);
     }
 
     /**
@@ -151,7 +152,7 @@ public class HelperMethods {
         while (!doorOpened) {
             System.out.println("Didn't open door, try again");
             doorOpened = openDoor(doorID, area, ctx);
-            randomSleep(300, 800);
+            randomSleep(500, 1000);
         }
         return doorOpened;
     }
@@ -388,12 +389,18 @@ public class HelperMethods {
     }
 
     public static void attack(int npcID, ClientContext ctx) {
-        Npc npc = getNpcWithID(npcID, ctx);
+        Filter<Npc> healthNotVisible = new Filter<Npc>() {
+            @Override
+            public boolean accept(Npc npc) {
+                return !npc.healthBarVisible();
+            }
+        };
+        Npc npc = ctx.npcs.select().id(npcID).nearest().select(healthNotVisible).poll();
         npc.interact("Attack");
         TutorialConditions tutorialConditions = new TutorialConditions(ctx);
         boolean inCombat = Condition.wait(tutorialConditions.inCombat, 500, 10);
         while (!inCombat) {
-            npc = getNpcWithID(npcID, ctx);
+            npc = ctx.npcs.select().id(npcID).nearest().select(healthNotVisible).poll();
             npc.interact("Attack");
             inCombat = Condition.wait(tutorialConditions.inCombat, 500, 10);
         }
